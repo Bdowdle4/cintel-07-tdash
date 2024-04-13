@@ -1,11 +1,13 @@
 import seaborn as sns
 from faicons import icon_svg
-
+from shinyswatch import theme
 from shiny import reactive
 from shiny.express import input, render, ui
 import palmerpenguins 
 
 df = palmerpenguins.load_penguins()
+
+theme.sketchy
 
 ui.page_opts(title="Penguins dashboard", fillable=True)
 
