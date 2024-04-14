@@ -7,7 +7,7 @@ import palmerpenguins
 
 df = palmerpenguins.load_penguins()
 
-theme.sketchy
+theme.sketchy()
 
 ui.page_opts(title="Penguins dashboard", fillable=True)
 
