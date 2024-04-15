@@ -1,18 +1,19 @@
-import seaborn as sns
-from faicons import icon_svg
-from shinyswatch import theme
-from shiny import reactive
-from shiny.express import input, render, ui
-import palmerpenguins 
+#These are everything you need to run the shiny for python playground
+import seaborn as sns # chart
+from faicons import icon_svg # to display icons
+from shinyswatch import theme # to change the visual style of ui
+from shiny import reactive # to make the ui change based on components
+from shiny.express import input, render, ui # the components and display window
+import palmerpenguins # dataset 
 
-df = palmerpenguins.load_penguins()
+df = palmerpenguins.load_penguins() # loading the dataset and creating a reference
 
-theme.sketchy()
+theme.sketchy() # bootswatch themes are premade and similar to microsoft themes
 
-ui.page_opts(title="Brittany's Updated Penguins dashboard", fillable=True)
+ui.page_opts(title="Brittany's Updated Penguins dashboard", fillable=True) # Page options include a window title and how the ui is scaled to the screen being used
 
 
-with ui.sidebar(title="Choose the mass and species of penguins", style= "font-weight: bold;"):
+with ui.sidebar(title="Choose the mass and species of penguins", style= "font-weight: bold;"): # sidebars hold all of the input components that make the ui filtered
     ui.input_slider("mass", "Mass", 2000, 6000, 6000)
     ui.input_checkbox_group(
         "species",
@@ -20,7 +21,7 @@ with ui.sidebar(title="Choose the mass and species of penguins", style= "font-we
         ["Adelie", "Gentoo", "Chinstrap"],
         selected=["Adelie", "Gentoo", "Chinstrap"],
     )
-    ui.hr()
+    ui.hr() # horizontal rule is just a line that providea a spacer line to separate areas of the sidebar
     ui.h6("Resource Links", style= "font-weight: bold;")
     ui.a(
         "GitHub Source",
@@ -50,8 +51,8 @@ with ui.sidebar(title="Choose the mass and species of penguins", style= "font-we
     )
 
 
-with ui.layout_column_wrap(fill=False):
-    with ui.value_box(showcase=icon_svg("earlybirds"), style= "font-weight: bold;"):
+with ui.layout_column_wrap(fill=False): # this will determine how the output components are displayed and their scale to the screen being viewed on
+    with ui.value_box(showcase=icon_svg("earlybirds"), style= "font-weight: bold;"): # value boxes make easy visuals for reactive calculations based on filters
         "Number of penguins"
 
         @render.text
@@ -73,7 +74,7 @@ with ui.layout_column_wrap(fill=False):
             return f"{filtered_df()['bill_depth_mm'].mean():.1f} mm"
 
 
-with ui.layout_columns():
+with ui.layout_columns(): # creates a second set of columns for visuals, normally dataframes and charts
     with ui.card(full_screen=True):
         ui.card_header("Bill length compared to depth", style= "font-weight: bold;")
 
@@ -86,7 +87,7 @@ with ui.layout_columns():
                 hue="species",
             )
 
-    with ui.card(full_screen=True):
+    with ui.card(full_screen=True): # cards keep your visual in a contained space and provides spacing between other visuals
         ui.card_header("Penguin data grid - input filters", style= "font-weight: bold;")
 
         @render.data_frame
@@ -104,7 +105,7 @@ with ui.layout_columns():
 #ui.include_css(app_dir / "styles.css")
 
 
-@reactive.calc
+@reactive.calc # Function to calculate filtered dataframe based on input values
 def filtered_df():
     filt_df = df[df["species"].isin(input.species())]
     filt_df = filt_df.loc[filt_df["body_mass_g"] < input.mass()]
