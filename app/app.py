@@ -5,12 +5,14 @@ from shinyswatch import theme # to change the visual style of ui
 from shiny import reactive # to make the ui change based on components
 from shiny.express import input, render, ui # the components and display window
 import palmerpenguins # dataset 
+from shinywidgets import render_plotly
+import plotly.express as px
 
 df = palmerpenguins.load_penguins() # loading the dataset and creating a reference
 
 theme.sketchy() # bootswatch themes are premade and similar to microsoft themes
 
-ui.page_opts(title="Brittany's Updated Penguins dashboard", fillable=True) # Page options include a window title and how the ui is scaled to the screen being used
+ui.page_opts(title="Brittany's Updated Penguins dashboard", window_title="Dowdle P7", fillable=True) # Page options include a title, window title, and how the ui is scaled to the screen being used
 
 
 with ui.sidebar(title="Choose the mass and species of penguins", style= "font-weight: bold;"): # sidebars hold all of the input components that make the ui filtered
@@ -78,13 +80,13 @@ with ui.layout_columns(): # creates a second set of columns for visuals, normall
     with ui.card(full_screen=True):
         ui.card_header("Bill length compared to depth", style= "font-weight: bold;")
 
-        @render.plot
-        def length_depth():
-            return sns.scatterplot(
+        @render_plotly
+        def length_depth_plotly():
+            return px.histogram(
                 data=filtered_df(),
                 x="bill_length_mm",
                 y="bill_depth_mm",
-                hue="species",
+                color="species",
             )
 
     with ui.card(full_screen=True): # cards keep your visual in a contained space and provides spacing between other visuals
