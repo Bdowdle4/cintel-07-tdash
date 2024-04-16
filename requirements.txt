@@ -5,3 +5,5 @@ seaborn
 pandas
 palmerpenguins
 shinyswatch
+plotly
+
