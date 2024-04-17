@@ -5,8 +5,9 @@ from shinyswatch import theme # to change the visual style of ui
 from shiny import reactive # to make the ui change based on components
 from shiny.express import input, render, ui # the components and display window
 import palmerpenguins # dataset 
-from shinywidgets import render_plotly
 import plotly.express as px
+
+from shinywidgets import render_plotly
 
 df = palmerpenguins.load_penguins() # loading the dataset and creating a reference
 
@@ -83,7 +84,7 @@ with ui.layout_columns(): # creates a second set of columns for visuals, normall
         @render_plotly
         def length_depth_plotly():
             return px.histogram(
-                data=filtered_df(),
+                data_frame=filtered_df(),
                 x="bill_length_mm",
                 y="bill_depth_mm",
                 color="species",
